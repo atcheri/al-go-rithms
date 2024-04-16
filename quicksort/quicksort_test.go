@@ -20,7 +20,7 @@ type testCaseMergeArrays struct {
 	expected []int
 }
 
-func Test_MergeSort(t *testing.T) {
+func Test_QuickSortRecursive(t *testing.T) {
 	testCases := []testCase{
 		{
 			name:     "returns the first element for a 1 element slice",
