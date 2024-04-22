@@ -7,4 +7,5 @@ use (
     ./mergesort
     ./quicksort
     ./kruskal
+    ./kadane
 )
