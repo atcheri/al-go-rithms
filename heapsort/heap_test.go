@@ -114,3 +114,51 @@ func Test_Pull(t *testing.T) {
 		})
 	}
 }
+
+func Test_Sort(t *testing.T) {
+	type testCase struct {
+		name   string
+		input  []int
+		output []int
+	}
+
+	cases := []testCase{
+		{
+			name:   "for a heap created from {5}, sorts and returns {5}",
+			input:  []int{5},
+			output: []int{5},
+		},
+		{
+			name:   "for a heap created from {1, 2}, sorts and returns {1, 2}",
+			input:  []int{1, 2},
+			output: []int{1, 2},
+		},
+		{
+			name:   "for a heap created from {10, 5, 3, 2, 4, 15}, sorts and returns {2, 3, 4, 5, 10, 15}",
+			input:  []int{10, 5, 3, 2, 4, 15},
+			output: []int{2, 3, 4, 5, 10, 15},
+		},
+		{
+			name:   "for a heap created from {1, 4, 2, 5, 13, 6, 17}, sorts and returns {1, 2, 4, 5, 6, 13, 17}",
+			input:  []int{1, 4, 2, 5, 13, 6, 17},
+			output: []int{1, 2, 4, 5, 6, 13, 17},
+		},
+	}
+
+	for _, tc := range cases {
+		c := tc
+		t.Run(c.name, func(t *testing.T) {
+			t.Parallel()
+			// arrange
+			heap := heapsort.NewMaxHeapFrom(c.input)
+
+			// act
+			sorted := heap.Sort()
+
+			// assert
+			assert.Equal(t, len(c.input), heap.Size())
+			assert.Equal(t, c.output, sorted)
+		})
+	}
+
+}

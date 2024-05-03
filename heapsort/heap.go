@@ -25,7 +25,7 @@ func (h MaxHeap) Size() int {
 
 func (h *MaxHeap) Insert(key int) *MaxHeap {
 	newSlice := append(h.slice, key)
-	h.slice = heapify(newSlice, len(newSlice)-1)
+	h.slice = heapifyUp(newSlice, len(newSlice)-1)
 
 	return h
 }
@@ -42,7 +42,9 @@ func (h *MaxHeap) Pull() int {
 	}
 
 	max := h.slice[0]
-	h.slice = heapify(h.slice[1:], len(h.slice[1:])-1)
+	lastIndex := len(h.slice) - 1
+	h.slice[0], h.slice[lastIndex] = h.slice[lastIndex], h.slice[0]
+	h.slice = NewMaxHeapFrom(h.slice[:lastIndex]).ToSlice()
 
 	return max
 }
@@ -59,13 +61,31 @@ func (h MaxHeap) Max() int {
 	return h.slice[0]
 }
 
-func heapify(slice []int, from int) []int {
+func (h MaxHeap) Sort() []int {
+	sorted := make([]int, len(h.slice))
+	for i := len(h.slice) - 1; i >= 0; i-- {
+		max := h.Pull()
+		sorted[i] = max
+	}
+
+	return sorted
+}
+
+func heapifyUp(slice []int, from int) []int {
+	p := parent(from)
+	_ = p
 	for slice[parent(from)] < slice[from] {
 		slice = swap(slice, parent(from), from)
 		from = parent(from)
 	}
 
 	return slice
+}
+
+func heapifyDown(slice []int) []int {
+	tmp := make([]int, len(slice))
+
+	return tmp
 }
 
 func parent(i int) int {
