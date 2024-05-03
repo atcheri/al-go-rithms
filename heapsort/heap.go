@@ -10,6 +10,15 @@ func NewMaxHeap() MaxHeap {
 	}
 }
 
+func NewMaxHeapFrom(input []int) MaxHeap {
+	heap := NewMaxHeap()
+	for _, i := range input {
+		heap.Insert(i)
+	}
+
+	return heap
+}
+
 func (h MaxHeap) Size() int {
 	return len(h.slice)
 }
@@ -21,8 +30,33 @@ func (h *MaxHeap) Insert(key int) *MaxHeap {
 	return h
 }
 
+func (h *MaxHeap) Pull() int {
+	if len(h.slice) == 0 {
+		return -1
+	}
+
+	if len(h.slice) == 1 {
+		max := h.slice[0]
+		h.slice = nil
+		return max
+	}
+
+	max := h.slice[0]
+	h.slice = heapify(h.slice[1:], len(h.slice[1:])-1)
+
+	return max
+}
+
 func (h MaxHeap) ToSlice() []int {
 	return h.slice
+}
+
+func (h MaxHeap) Max() int {
+	if len(h.slice) == 0 {
+		return -1
+	}
+
+	return h.slice[0]
 }
 
 func heapify(slice []int, from int) []int {
