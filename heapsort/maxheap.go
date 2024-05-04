@@ -82,8 +82,30 @@ func heapifyUp(slice []int, from int) []int {
 	return slice
 }
 
-func heapifyDown(slice []int) []int {
+func heapifyDown(slice []int, from int) []int {
 	tmp := make([]int, len(slice))
+	copy(tmp, slice)
+	lastIndex := len(slice) - 1
+	l, r := left(from), right(from)
+	toCompare := 0
+
+	for l <= lastIndex {
+		if l == lastIndex {
+			toCompare = l
+		} else if tmp[l] > tmp[r] {
+			toCompare = l
+		} else {
+			toCompare = r
+		}
+
+		if tmp[from] < tmp[toCompare] {
+			tmp = swap(tmp, from, toCompare)
+			from = toCompare
+			l, r = left(from), right(from)
+		} else {
+			return tmp
+		}
+	}
 
 	return tmp
 }
